@@ -33,7 +33,7 @@ type Converter interface {
 	ImageFile2ASCIIString(imageFilename string, option *Options) string
 }
 
-func playAnimation(converter *convert.ImageConverter, options convert.Options, numframes int, framedelay int, repeat int, path string) {
+func playAnimation(converter *convert.ImageConverter, options convert.Options, numframes int, framedelay int, repeat int, path string, numlines int) {
 	// var converter Converter = *conv
 
 	for ij := 0; ij < repeat; ij++ {
@@ -42,11 +42,11 @@ func playAnimation(converter *convert.ImageConverter, options convert.Options, n
 			// delay
 			time.Sleep(time.Duration(framedelay) * time.Millisecond)
 			//clear last lines
-			fmt.Print("\033[40A")
+			fmt.Printf("\033[%dA", numlines)
 		}
 	}
 	// skip 40 lines
-	fmt.Print("\033[40B")
+	fmt.Printf("\033[%dB", numlines)
 }
 
 func main() {
@@ -70,6 +70,6 @@ func main() {
 	// Create the image converter
 	converter := convert.NewImageConverter()
 
-	playAnimation(converter, convertOptions, *numframesFlagPtr, *framedelayFlagPtr, *repeatFlagPtr, *pathFlagPtr)
+	playAnimation(converter, convertOptions, *numframesFlagPtr, *framedelayFlagPtr, *repeatFlagPtr, *pathFlagPtr, *heightFlagPtr)
 
 }
